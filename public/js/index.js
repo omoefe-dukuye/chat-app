@@ -2,12 +2,13 @@ const socket = io();
 
 socket.on('connect', () => {
   console.log('Connected to server');
-  socket.on('newComment', comment => console.log('New Comment!', comment));
-  socket.emit('createComment', {
-    from: 'stacyxehi@example.com',
-    to: 'omoefe.dukuye@gmail.com',
-    text: 'I love you'
+
+  socket.on('newComment', ({ from: sender, text, createdAt }) => {
+    const newPara = document.createElement('p');
+    newPara.innerHTML = `${sender}: ${text}. <small>(${createdAt})</small>`;
+    document.querySelector('body').appendChild(newPara);
   });
-  socket.on('disconnect', () => console.log('Disconnected from server'));
+
+  console.log('Disconnected from server');
 });
 

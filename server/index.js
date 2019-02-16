@@ -16,12 +16,9 @@ const io = socketIO(server);
 
 io.on('connection', (socket) => {
   console.log('New user connected');
-  socket.on('createComment', comment => console.log('New Comment!', { ...comment, createdAt: 'timestamp' }));
-  socket.emit('newComment', {
-    from: 'omoefe.dukuye@gmail.com',
-    to: 'stacyxehi@example.com',
-    text: 'I love you too',
-    createdAt: 'timestamp'
+  socket.on('createComment', comment => {
+    console.log('New Comment!', comment);
+    io.emit('newComment', { ...comment, createdAt: new Date().getTime() });
   });
   socket.on('disconnect', () => console.log('User disconnected'));
 });
