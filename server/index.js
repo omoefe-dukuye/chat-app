@@ -16,10 +16,14 @@ const io = socketIO(server);
 
 io.on('connection', (socket) => {
   console.log('New user connected');
+
+  socket.broadcast.emit('newUser');
+
   socket.on('createComment', comment => {
     console.log('New Comment!', comment);
     io.emit('newComment', { ...comment, createdAt: new Date().getTime() });
   });
+
   socket.on('disconnect', () => console.log('User disconnected'));
 });
 
