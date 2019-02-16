@@ -1,4 +1,6 @@
 import express from 'express';
+import socketIO from 'socket.io';
+import http from 'http';
 import path from 'path';
 
 const publicPath = path.join(__dirname, '../public');
@@ -9,4 +11,12 @@ app.use(express.static(publicPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(port, () => console.log(`Server now start on port ${port}`));
+const server = http.createServer(app);
+const io = socketIO(server);
+
+io.on('connection', (socket) => {
+  console.log('New user connected');
+  socket.on('disconnect', () => console.log('User disconnected'));
+});
+
+server.listen(port, () => console.log(`Server now start on port ${port}`));
