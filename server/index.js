@@ -19,15 +19,15 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  socket.emit('newUser', generateMessage('Admin', 'Welcome to the chat app'));
-  socket.broadcast.emit('newUser', generateMessage('Admin', 'New User Joined'));
+  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+  socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));
 
-  socket.on('createComment', ({ from, text }) => {
-    console.log('New Comment!', generateMessage(from, text));
-    io.emit('newComment', generateMessage(from, text));
+  socket.on('createMessage', ({ from, text }) => {
+    console.log('New Message!', generateMessage(from, text));
+    io.emit('newMessage', generateMessage(from, text));
   });
 
   socket.on('disconnect', () => console.log('User disconnected'));
 });
 
-server.listen(3000, () => console.log(`Server now start on port ${port}`));
+server.listen(port, () => console.log(`Server now start on port ${port}`));

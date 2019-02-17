@@ -1,17 +1,19 @@
 const socket = io();
 
-const addToDom = ({ from: sender, text, createdAt }) => {
-  const newPara = document.createElement('p');
-  newPara.innerHTML = `${sender}: ${text}. <small>(${createdAt})</small>`;
-  document.querySelector('body').appendChild(newPara);
-};
-
 socket.on('connect', () => {
   console.log('Connected to server');
 
-  socket.on('newComment', comment => addToDom(comment));
+  socket.on('newMessage', ({ from, text, createdAt }) => {
+    const li = jQuery('<li></li>').html(`${from}: ${text}. <small>(${createdAt})</small>`);
+    jQuery('#messages').append(li);
+  });
 
-  socket.on('newUser', comment => addToDom(comment));
+  jQuery('#message-form').on('submit', (e) => {
+    e.preventDefault();
+    socket.emit('createMessage', {
+      from: 'User', text: jQuery('[name=message]').val()
+    });
+  });
 
   socket.on('disconnect', () => console.log('Disconnected from server'));
 });
