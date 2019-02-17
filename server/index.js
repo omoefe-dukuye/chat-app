@@ -3,6 +3,8 @@ import socketIO from 'socket.io';
 import http from 'http';
 import path from 'path';
 
+import generateMessage from './utils/generateMessage';
+
 const publicPath = path.join(__dirname, '../public');
 const app = express();
 const { PORT: port = 3000 } = process.env;
@@ -17,14 +19,15 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  socket.broadcast.emit('newUser');
+  socket.emit('newUser', generateMessage('Admin', 'Welcome to the chat app'));
+  socket.broadcast.emit('newUser', generateMessage('Admin', 'New User Joined'));
 
-  socket.on('createComment', comment => {
-    console.log('New Comment!', comment);
-    io.emit('newComment', { ...comment, createdAt: new Date().getTime() });
+  socket.on('createComment', ({ from, text }) => {
+    console.log('New Comment!', generateMessage(from, text));
+    io.emit('newComment', generateMessage(from, text));
   });
 
   socket.on('disconnect', () => console.log('User disconnected'));
 });
 
-server.listen(port, () => console.log(`Server now start on port ${port}`));
+server.listen(3000, () => console.log(`Server now start on port ${port}`));

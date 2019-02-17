@@ -1,0 +1,1 @@
+export default (from, text) => ({ from, text, createdAt: new Date().getTime() });

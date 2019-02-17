@@ -11,8 +11,7 @@ socket.on('connect', () => {
 
   socket.on('newComment', comment => addToDom(comment));
 
-  socket.on('newUser', () => addToDom({ from: 'Admin', text: 'New User Joined', createdAt: new Date().getTime() }));
+  socket.on('newUser', comment => addToDom(comment));
 
   socket.on('disconnect', () => console.log('Disconnected from server'));
 });
-
