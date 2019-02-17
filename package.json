@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "heroku-postbuild": "rm -rf dist/ && babel server/ -d dist/",
     "start": "node dist",
     "start-dev": "nodemon -x babel-node server/",
-    "test": "mocha --require @babel/register tests/**/*.test.js",
+    "test": "nyc mocha --require @babel/register tests/**/*.test.js",
     "test-watch": "nodemon -x npm test"
   },
   "engines": {
-    "node": "11.6.0"
+    "node": "11.10.0"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +28,9 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
     "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "nyc": "^13.3.0"
   }
 }
