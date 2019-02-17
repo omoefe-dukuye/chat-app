@@ -29,6 +29,9 @@
     "@babel/register": "^7.0.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
+    "eslint": "^5.14.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.10",
     "nyc": "^13.3.0"

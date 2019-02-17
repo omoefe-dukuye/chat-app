@@ -3,7 +3,7 @@ import socketIO from 'socket.io';
 import http from 'http';
 import path from 'path';
 
-import generateMessage from './utils/generateMessage';
+import { generateMessage, generateLocationMessage } from './utils/generateMessage';
 
 const publicPath = path.join(__dirname, '../public');
 const app = express();
@@ -23,8 +23,11 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));
 
   socket.on('createMessage', ({ from, text }) => {
-    console.log('New Message!', generateMessage(from, text));
     io.emit('newMessage', generateMessage(from, text));
+  });
+
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newLocationMessage', generateLocationMessage('Admin', coords));
   });
 
   socket.on('disconnect', () => console.log('User disconnected'));
