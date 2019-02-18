@@ -1,4 +1,4 @@
-/* global io, moment */
+/* global io, moment, Mustache */
 
 const socket = io();
 
@@ -6,19 +6,17 @@ socket.on('connect', () => {
   console.log('Connected to server');
 
   socket.on('newMessage', ({ from, text, createdAt }) => {
-    const li = jQuery('<li></li>').html(`${from}: ${text}. <small><em>(${moment(createdAt).format('h:mm a')})</em></small>`);
-    jQuery('#messages').append(li);
+    createdAt = moment(createdAt).format('h:mm a');
+    const template = jQuery('#message-template').html();
+    const html = Mustache.render(template, { from, text, createdAt });
+    jQuery('#messages').append(html);
   });
 
   socket.on('newLocationMessage', ({ from, url, createdAt }) => {
-    const li = jQuery('<li></li>').text(`${from}: `);
-    const anchorTag = jQuery('<a target=_blank></a>').text('My Current Location');
-    const small = jQuery('<small></small>').html(`<em>. (${moment(createdAt).format('h:mm a')})</em>`);
-
-    anchorTag.attr('href', url);
-    li.append(anchorTag);
-    li.append(small);
-    jQuery('#messages').append(li);
+    createdAt = moment(createdAt).format('h:mm a');
+    const template = jQuery('#location-message-template').html();
+    const html = Mustache.render(template, { from, url, createdAt });
+    jQuery('#messages').append(html);
   });
 
   jQuery('#message-form').on('submit', (e) => {
