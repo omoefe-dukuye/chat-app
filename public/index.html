@@ -5,19 +5,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Chat App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
-  <ol id="messages"></ol>
+<body class="chat">
 
-  <form id="message-form">
-    <input name="message" placeholder="Message" required autofocus>
-    <input type="submit" value="Send">
-  </form>
+  <div class="chat__sidebar">
+    <h3>People</h3>
+    <div id="users"></div>
+  </div>
 
-  <button id="send-location">Send Location</button>
+  <div class="chat__main">
+    <ol id="messages" class="chat__messages"></ol>
+    
+    <div class="chat__footer">
+      <form id="message-form">
+          <input name="message" placeholder="Message" required autofocus autocomplete="off">
+          <button>Send</button>
+      </form>
+    
+      <button id="send-location">Send Location</button>
+    </div>
+  </div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/libs/jquery.js"></script>
+  <script src="/js/libs/moment.js"></script>
   <script src="/js/index.js"></script>
 </body>
 </html>

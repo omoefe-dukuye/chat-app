@@ -22,12 +22,14 @@ io.on('connection', (socket) => {
   socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));
 
-  socket.on('createMessage', ({ from, text }) => {
+  socket.on('createMessage', ({ from, text }, cb) => {
     io.emit('newMessage', generateMessage(from, text));
+    cb();
   });
 
-  socket.on('createLocationMessage', (coords) => {
+  socket.on('createLocationMessage', (coords, cb) => {
     io.emit('newLocationMessage', generateLocationMessage('Admin', coords));
+    cb();
   });
 
   socket.on('disconnect', () => console.log('User disconnected'));
