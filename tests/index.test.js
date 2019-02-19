@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 
 import { generateMessage, generateLocationMessage } from '../server/utils/generateMessage';
+import validator from '../server/utils/validator';
 
 describe('Generate Message', () => {
   it('Should generate correct message', () => {
-    const { from, text } = { from: 'omoefe.dukuyeWgmail.com', text: 'I am good boy' }
+    const { from, text } = { from: 'omoefe.dukuyeWgmail.com', text: 'I am good boy' };
     const res = generateMessage(from, text);
 
     expect(res.from).to.eql(from);
@@ -21,5 +22,14 @@ describe('Generate Location Message', () => {
     expect(res.from).to.eql(from);
     expect(res.url).to.equal(`https://www.google.com/maps?q=${latitude},${longitude}`);
     expect(res.createdAt).to.be.a('number');
+  });
+});
+
+describe('Validator', () => {
+  it('Should generate correct boolean', () => {
+    expect(validator('random string')).to.equal(true);
+    expect(validator('random string')).to.be.a('boolean');
+    expect(validator('   ')).to.equal(false);
+    expect(validator(' ', 'baloney')).to.equal(false);
   });
 });
