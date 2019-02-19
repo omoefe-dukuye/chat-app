@@ -56,9 +56,12 @@ socket.on('connect', () => {
     e.preventDefault();
     const messageTextbox = jQuery('[name=message]');
 
-    socket.emit('createMessage', {
-      from: 'User', text: messageTextbox.val()
-    }, () => messageTextbox.val(''));
+    socket.emit('createMessage', messageTextbox.val(), (error) => {
+      if (error) {
+        return alert(error);
+      }
+      messageTextbox.val('');
+    });
   });
 
   const locationButton = jQuery('#send-location');

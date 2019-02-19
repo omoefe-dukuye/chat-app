@@ -23,16 +23,6 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  socket.on('createMessage', ({ from, text }, cb) => {
-    io.emit('newMessage', generateMessage(from, text));
-    cb();
-  });
-
-  socket.on('createLocationMessage', (coords, cb) => {
-    io.emit('newLocationMessage', generateLocationMessage('Admin', coords));
-    cb();
-  });
-
   socket.on('join', ({ name, room }, cb) => {
     if (!isRealString(name, room)) {
       return cb('Name and room name are required');
@@ -47,6 +37,19 @@ io.on('connection', (socket) => {
     io.to(room).emit('updateUsersList', users.getUserList(room));
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
     socket.broadcast.to(room).emit('newMessage', generateMessage('Admin', `${name} just joined the room`));
+
+    socket.on('createMessage', (text, createMessageCb) => {
+      if (!isRealString(text)) {
+        return createMessageCb('Please enter valid text');
+      }
+      io.to(room).emit('newMessage', generateMessage(name, text));
+      createMessageCb();
+    });
+
+    socket.on('createLocationMessage', (coords, createLocationMessageCb) => {
+      io.to(room).emit('newLocationMessage', generateLocationMessage(name, coords));
+      createLocationMessageCb();
+    });
 
     cb();
   });
