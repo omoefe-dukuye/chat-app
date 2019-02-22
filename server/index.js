@@ -46,9 +46,9 @@ io.on('connection', (socket) => {
       createMessageCb();
     });
 
-    socket.on('createLocationMessage', (coords, createLocationMessageCb) => {
-      io.to(room).emit('newLocationMessage', generateLocationMessage(name, coords));
-      createLocationMessageCb();
+    socket.on('createLocationMessage', (coords, createMessageCb) => {
+      io.to(room).emit('newMessage', generateLocationMessage(name, coords));
+      createMessageCb();
     });
 
     cb();

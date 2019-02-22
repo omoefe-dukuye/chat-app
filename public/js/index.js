@@ -36,18 +36,13 @@ socket.on('connect', () => {
     jQuery('#users').html(ol);
   });
 
-  socket.on('newMessage', ({ from, text, createdAt }) => {
+  socket.on('newMessage', ({
+    from, text, url, createdAt
+  }) => {
     createdAt = moment(createdAt).format('h:mm a');
-    const template = jQuery('#message-template').html();
-    const html = Mustache.render(template, { from, text, createdAt });
-    jQuery('#messages').append(html);
-    scrollToButtom();
-  });
-
-  socket.on('newLocationMessage', ({ from, url, createdAt }) => {
-    createdAt = moment(createdAt).format('h:mm a');
-    const template = jQuery('#location-message-template').html();
-    const html = Mustache.render(template, { from, url, createdAt });
+    const template = jQuery(`#${text ? '' : 'location-'}message-template`).html();
+    const html = text ? Mustache.render(template, { from, text, createdAt })
+      : Mustache.render(template, { from, url, createdAt });
     jQuery('#messages').append(html);
     scrollToButtom();
   });
