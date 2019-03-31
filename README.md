@@ -5,3 +5,5 @@
 Simple chat app using [Node.js](https://nodejs.org/en/) with [socket.io](https://socket.io)
 
 (From the `socket.io` section of [Andrew Mead's Node.js Course](https://www.udemy.com/user/andrewmead/))
+
+[See live here](https://the-chat-app-omo.herokuapp.com)
